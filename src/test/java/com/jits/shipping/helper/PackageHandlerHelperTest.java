@@ -22,36 +22,39 @@ public class PackageHandlerHelperTest {
     @Autowired
     private PackageHandlerHelper packageHandlerHelper;
 
+    //Format ID|GRD|FROMZIP|TOZIP|WEIGHT|HEIGHT|WIDTH|DEPTH|OTHER|HAZARD|
+    //Valid Example 012345678901234567|GRD|12345|67890|12345|67890|12345|67890|OTHER|HAZARD|
+
     @Test
-    public  void addNewPackageTestSuccessful()throws Exception{
-        packageHandlerHelper.validateAndAddPackage("01234567890123456GRD123456789012345678901234567890OTHERHAZARD");
+    public void addNewPackageTestSuccessful() throws Exception {
+        packageHandlerHelper.validateAndAddPackage("001234567890123456GRD123456789012345678901234567890OTHERHAZARD");
     }
 
     @Test
-    public  void addNewPackageTestInvalidShipMethod()throws Exception{
+    public void addNewPackageTestInvalidShipMethod() throws Exception {
         exception.expect(ValidationException.class);
         exception.expectMessage("Invalid Shipment Method");
-        packageHandlerHelper.validateAndAddPackage("012345678901234567892123456789012345678901234567890OTHERHAZARD");
+        packageHandlerHelper.validateAndAddPackage("0012345678901234567892123456789012345678901234567890OTHERHAZARD");
     }
 
     @Test
-    public  void addNewPackageTestInvalidFromZipCode()throws Exception{
+    public void addNewPackageTestInvalidFromZipCode() throws Exception {
         exception.expect(ValidationException.class);
         exception.expectMessage("Invalid From Zip Code");
-        packageHandlerHelper.validateAndAddPackage("01234567890123456GRDwrong6789012345678901234567890OTHERHAZARD");
+        packageHandlerHelper.validateAndAddPackage("001234567890123456GRDwrong6789012345678901234567890OTHERHAZARD");
     }
 
     @Test
-    public  void addNewPackageTestInvalidToZipCode()throws Exception{
+    public void addNewPackageTestInvalidToZipCode() throws Exception {
         exception.expect(ValidationException.class);
         exception.expectMessage("Invalid To Zip Code");
-        packageHandlerHelper.validateAndAddPackage("01234567890123456GRD12345wrong12345678901234567890OTHERHAZARD");
+        packageHandlerHelper.validateAndAddPackage("001234567890123456GRD12345wrong12345678901234567890OTHERHAZARD");
     }
 
     @Test
-    public  void addNewPackageTestInvalidHeight()throws Exception{
+    public void addNewPackageTestInvalidHeight() throws Exception {
         exception.expect(ValidationException.class);
         exception.expectMessage("Invalid Weight");
-        packageHandlerHelper.validateAndAddPackage("01234567890123456GRD1234567890wrong678901234567890OTHERHAZARD");
+        packageHandlerHelper.validateAndAddPackage("001234567890123456GRD1234567890wrong678901234567890OTHERHAZARD");
     }
 }

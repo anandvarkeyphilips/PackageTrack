@@ -1,20 +1,22 @@
 package com.jits.shipping.entity;
 
+import java.util.Comparator;
+
 /**
  * Created by Anand Philips on 5/31/2018.
  */
 public class Package {
 
-    private  String id;
-    private  String shipMethod;
-    private  String fromZip;
-    private  String toZip;
-    private  Float weight;
-    private  int height;
-    private  int width;
-    private  int depth;
-    private  String other;
-    private  String hazards;
+    private String id;
+    private String shipMethod;
+    private String fromZip;
+    private String toZip;
+    private Float weight;
+    private int height;
+    private int width;
+    private int depth;
+    private String other;
+    private String hazards;
 
     public String getId() {
         return id;
@@ -95,4 +97,11 @@ public class Package {
     public void setHazards(String hazards) {
         this.hazards = hazards;
     }
+
+    public static Comparator<Package> idComparator = new Comparator<Package>() {
+        @Override
+        public int compare(Package p1, Package p2) {
+            return (int) (p1.getId().compareTo(p2.getId()));
+        }
+    };
 }
