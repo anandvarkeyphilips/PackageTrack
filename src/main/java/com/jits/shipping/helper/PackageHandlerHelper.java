@@ -18,21 +18,26 @@ public class PackageHandlerHelper {
 
     public Package validateAndAddPackage(String barCode) throws ValidationException {
 
-        //Format ID|GRD|FROMZIP|TOZIP|WEIGHT|HEIGHT|WIDTH|DEPTH|OTHER|HAZARD|
-        //Valid Example 012345678901234567|GRD|12345|67890|12345|67890|12345|67890|OTHER|HAZARD|
+        //Format ID|GRD|FROMZIP|TOZIP|WEIGHT|HEIGHT|WIDTH|DEPTH|OTHER|HAZARD
+        //Valid Example 012345678901234567|GRD|12345|67890|12345|67890|12345|67890|OTHER|HAZARD
         Package aPackage = new Package();
+        String[] packageDetails = barCode.split("\\|");
 
-        String id = barCode.substring(0, 18);
+        if(packageDetails.length != 10){
+            throw new ValidationException("The Barcode is having invalid number of details");
+        }
+
+        String id = packageDetails[0];
         aPackage.setId(id);
 
-        String shipMethod = barCode.substring(18, 21);
+        String shipMethod = packageDetails[1];
         if (Arrays.asList(AppConstants.validShipMethods).contains(shipMethod)) {
             aPackage.setShipMethod(shipMethod);
         } else {
             throw new ValidationException("Invalid Shipment Method");
         }
 
-        String fromZip = barCode.substring(21, 26);
+        String fromZip = packageDetails[2];
         try {
             Integer.parseInt(fromZip);
             aPackage.setFromZip(fromZip);
@@ -40,7 +45,7 @@ public class PackageHandlerHelper {
             throw new ValidationException("Invalid From Zip Code");
         }
 
-        String toZip = barCode.substring(26, 31);
+        String toZip = packageDetails[3];
         try {
             Integer.parseInt(toZip);
             aPackage.setFromZip(toZip);
@@ -48,37 +53,37 @@ public class PackageHandlerHelper {
             throw new ValidationException("Invalid To Zip Code");
         }
 
-        String weight = barCode.substring(31, 36);
+        String weight = packageDetails[4];
         try {
             aPackage.setWeight(Float.parseFloat(weight));
         } catch (NumberFormatException e) {
             throw new ValidationException("Invalid Weight");
         }
 
-        String height = barCode.substring(36, 41);
+        String height = packageDetails[5];
         try {
             aPackage.setHeight(Integer.parseInt(height));
         } catch (NumberFormatException e) {
             throw new ValidationException("Invalid Height");
         }
 
-        String width = barCode.substring(41, 46);
+        String width = packageDetails[6];
         try {
             aPackage.setWidth(Integer.parseInt(width));
         } catch (NumberFormatException e) {
             throw new ValidationException("Invalid Width");
         }
 
-        String depth = barCode.substring(46, 51);
+        String depth = packageDetails[7];
         try {
             aPackage.setDepth(Integer.parseInt(depth));
         } catch (NumberFormatException e) {
             throw new ValidationException("Invalid To depth");
         }
 
-        aPackage.setOther(barCode.substring(51, 56));
+        aPackage.setOther(packageDetails[8]);
 
-        aPackage.setHazards(barCode.substring(56, 62));
+        aPackage.setHazards(packageDetails[9]);
         LOGGER.debug("Validation has been successfully completed for {}", barCode);
         return aPackage;
     }

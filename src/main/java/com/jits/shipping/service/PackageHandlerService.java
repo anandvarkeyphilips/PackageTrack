@@ -2,12 +2,14 @@ package com.jits.shipping.service;
 
 import com.jits.shipping.entity.Package;
 import com.jits.shipping.exceptions.ValidationException;
+import com.jits.shipping.helper.InformationLookupHelper;
 import com.jits.shipping.helper.PackageHandlerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,12 +21,12 @@ import java.util.stream.Collectors;
  */
 @Component
 public class PackageHandlerService {
+    private static Logger LOGGER = LoggerFactory.getLogger(PackageHandlerService.class);
+    public List<Package> packageList = new ArrayList<>();
     @Autowired
     private PackageHandlerHelper packageHandlerHelper;
-
-    private static Logger LOGGER = LoggerFactory.getLogger(PackageHandlerService.class);
-
-    public List<Package> packageList = new ArrayList<>();
+    @Autowired
+    private InformationLookupHelper informationLookupHelper;
 
     public void addNewPackage(String barCode) {
         try {
@@ -49,5 +51,17 @@ public class PackageHandlerService {
                 System.out.println(p.getId() + "| " + p.getShipMethod());
             });
         }));
+        System.out.println("\nPrinted on " + LocalDateTime.now());
+    }
+
+    public void getDistributionCentreService(String stateCode) {
+        String distCentre = informationLookupHelper.getDistributionCentre(stateCode);
+        if (distCentre == null) {
+            System.out.println("Distribution Centre not found or Invalid State entered");
+        } else if (distCentre == "NA") {
+            System.out.println("Distribution Centre is Not applicable");
+        } else {
+            System.out.println("Distribution Centre: " + distCentre);
+        }
     }
 }

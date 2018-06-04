@@ -1,6 +1,5 @@
 package com.jits.shipping.service;
 
-import com.jits.shipping.exceptions.ValidationException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -20,22 +19,36 @@ public class PackageHandlerServiceTest {
     public ExpectedException exception = ExpectedException.none();
 
     @Autowired
-    private PackageHandlerService packageHandlerService;
+    public PackageHandlerService packageHandlerService;
 
     @Test
     public void addNewPackageTestSuccessful() throws Exception {
-        packageHandlerService.addNewPackage("001234567890123456GRD123456789012345678901234567890OTHERHAZARD");
+        packageHandlerService.addNewPackage("012345678901234567|GRD|12345|67890|12345|67890|12345|67890|OTHER|HAZARD");
     }
 
     @Test
     public void generateReport() throws Exception {
-        packageHandlerService.addNewPackage("021344839439700689GRD123456789012345678901234567890OTHERHAZARD");
-        packageHandlerService.addNewPackage("001234567890123458GRD123456789012345678901234567890OTHERHAZARD");
-        packageHandlerService.addNewPackage("213654889765021231AIR123456789012345678901234567890OTHERHAZARD");
-        packageHandlerService.addNewPackage("001234567890123456AIR123456789012345678901234567890OTHERHAZARD");
-        packageHandlerService.addNewPackage("001234567890123456RAL123456789012345678901234567890OTHERHAZARD");
-        packageHandlerService.addNewPackage("101234567890123456RAL123456789012345678901234567890OTHERHAZARD");
+        packageHandlerService.addNewPackage("021344839439700689|GRD|12345|67890|12345|67890|12345|67890|OTHER|HAZARD");
+        packageHandlerService.addNewPackage("001234567890123458|GRD|12345|67890|12345|67890|12345|67890|OTHER|HAZARD");
+        packageHandlerService.addNewPackage("213654889765021231|AIR|12345|67890|12345|67890|12345|67890|OTHER|HAZARD");
+        packageHandlerService.addNewPackage("001234567890123456|AIR|12345|67890|12345|67890|12345|67890|OTHER|HAZARD");
+        packageHandlerService.addNewPackage("001234567890123456|RAL|12345|67890|12345|67890|12345|67890|OTHER|HAZARD");
+        packageHandlerService.addNewPackage("101234567890123456|RAL|12345|67890|12345|67890|12345|67890|OTHER|HAZARD");
         packageHandlerService.generateReport();
     }
 
+    @Test
+    public void getDistributionCentreSuccesfully() {
+        packageHandlerService.getDistributionCentreService("NY");
+    }
+
+    @Test
+    public void getDistributionCentreWithValueNA() {
+        packageHandlerService.getDistributionCentreService("HI");
+    }
+
+    @Test
+    public void getDistributionCentreForInvlaidState() {
+        packageHandlerService.getDistributionCentreService("ZZ");
+    }
 }
